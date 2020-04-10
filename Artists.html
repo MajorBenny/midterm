@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Media Art Archive</title>
+        <link rel="stylesheet" type="text/css" href="style/artists.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.3/handlebars.min.js"></script>
+    <script id='templateHB' type = "text/x-handlebars-template">
+        <!--Handlebars-->
+        {{#each artistsList}}
+        <article class="artistsList">
+          <img class="image" src={{this.image}}   alt= {{this.name}}>
+          <section class="details">
+            <h2 class="name">{{this.name}}</h2>
+            <p class="description">{{this.description}}</p>
+            <a class="more" href="JohnMaeda.html">{{this.more}}</a>
+     
+            
+            
+          </section>
+        </article>
+        {{/each}}
+    </script>
+
+
+    </head>
+    <body>
+        <!-- Header-->
+        <nav class="header">
+            <span class="logo">Media Art Archive</span>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="Artists.html">Artist</a></li>
+                <li><a href="map.html">Map</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </nav>
+
+        <article id="showcase">
+            <section class="container" id="information">
+              
+            </section>
+          </article>
+
+          <footer>
+            <p>&copy; New Media Archieve</p>
+          </footer>
+      
+          <script src="script/artists.js"></script>
+        
+    </body>
+</html>

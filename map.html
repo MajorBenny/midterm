@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<title>New Media Archive</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.5/turf.min.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+
+</head>
+<!-- THE BODY OF THE HTML BEGINS HERE -->
+
+<body class="bodyMap">
+
+    <nav class="header">
+        <span class="logo">Media Art Archive</span>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="Artists.html">Artist</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+    </nav>
+
+
+
+	<!-- map & story-->
+
+	<div id='map'>
+		<div id="dropdown">
+			<select id="select-menu">
+				<option value="">All Groups</option>
+			</select>
+		</div>
+		<div id='headPlace'> Rollover to get info</div>
+	</div>
+	
+	<div id='storyPlace'> New Media Artists</div>
+
+
+	<script type="text/javascript" src="script/story-data.js"></script>
+
+
+	<!-- GEOJSON-->
+
+	<script type="text/javascript" src="script/geo-data.js"></script>
+
+
+
+    <script type="text/javascript">
+    
+// appearence of the map
+
+		mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+		var map = new mapboxgl.Map({
+			container: 'map', // HTML container ID
+			style: 'mapbox://styles/mapbox/dark-v10', // style URL
+			center: [286.02891862392426,
+          40.752869196830034], // starting position as [lng, lat]
+			zoom: 10
+		});
+		map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+// all of this JavaScript manages what's displayed on hover and click
+		var popup = new mapboxgl.Popup({ closeButton: false, closeOnClick: false });
+
+		let hoverCurrentId = null
+		var datalayer;
+
+		function updateStory(e) {
+			let feature = e.features[0]
+			document.getElementById("storyPlace").innerHTML = feature.properties.story
+		}
+		function updateHead(e) {
+			let feature = e.features[0]
+			map.getCanvas().style.cursor = 'pointer';
+			document.getElementById("headPlace").innerHTML = feature.properties.placeName
+
+		}
+		function removeHead(e) {
+			document.getElementById("headPlace").innerHTML = "&nbsp;"
+			map.getCanvas().style.cursor = '';
+
+		}
+
+		function startHover(e) {
+			let feature = e.features[0]
+
+			if (hoverCurrentId) {
+				map.setFeatureState({ source: 'datalayer', id: hoverCurrentId }, { hover: false });
+			}
+			hoverCurrentId = feature.id
+			map.setFeatureState({ source: 'datalayer', id: hoverCurrentId }, { hover: true });
+		}
+
+		function stopHover(e) {
+			if (hoverCurrentId) {
+				map.setFeatureState({ source: 'datalayer', id: hoverCurrentId }, { hover: false });
+			}
+			hoverCurrentId = null;
+		}
+
+		function drawPopup(e) {
+			let feature = e.features[0]
+			map.getCanvas().style.cursor = 'pointer';
+
+			var coordinates = feature.geometry.coordinates.slice();
+			var placeName = feature.properties.placeName;
+
+			while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+			}
+
+			popup.setLngLat(coordinates)
+				.setHTML(`<h4>${placeName}</h4>`)
+				.addTo(map);
+		}
+
+		function removePopup(e) {
+			map.getCanvas().style.cursor = '';
+			popup.remove();
+		}
+
+		map.on('load', function () {
+			for (let i = 0; i < infoData.features.length; i++) {
+				infoData.features[i]['id'] = i + 1
+            }
+            
+// color, radius
+
+
+			datalayer = map.addLayer({
+				id: "datalayer",
+				type: "circle",
+				source: {
+					type: "geojson",
+					data: infoData,
+				},
+				paint: {
+					'circle-radius': ['to-number', ['get', 'radius']],
+					'circle-stroke-color': 'white',
+					'circle-stroke-width': 2,
+					'circle-color': [
+						'case',
+						['boolean', ['feature-state', 'hover'], false],
+						'#666',
+						['get', 'color'],
+					],
+					'circle-opacity': [
+						'case',
+						['boolean', ['feature-state', 'hover'], false],
+						1,
+						0.5
+					]
+				}
+            });
+            
+			map.on('mouseenter', 'datalayer', function (e) {
+                startHover(e)
+                
+				updateHead(e)
+			});
+
+			
+			map.on('mouseleave', 'datalayer', function (e) {
+                stopHover(e)
+                
+				removeHead(e)
+			});
+
+            
+			map.on('click', 'datalayer', function (e) {
+				updateStory(e)
+			})
+
+            
+
+			map.fitBounds(turf.bbox(infoData), { padding: 120, linear: true })
+		})
+
+
+	</script>
+	<script>
+	// this part is J query
+		var groupsObj = {};
+
+		$(document).ready(function () {
+			infoData.features.forEach(function (feature) {
+				groupsObj[feature.properties.group_id] = feature.properties.group_name;
+			})
+
+			$.each(groupsObj, function (key, value) {
+				$('#select-menu')
+					.append($("<option></option>")
+						.attr("value", value)
+						.text(value));
+			});
+
+			$('#select-menu').change(function () {
+				var selectedGroup = $('#select-menu').val();
+
+				if (!selectedGroup) {
+					map.setFilter('datalayer', null);
+				} else {
+					map.setFilter('datalayer', ['==', ['get', 'group_name'], selectedGroup]);
+				}
+			});
+		});
+	</script>
+
+
+</body>
+
+</html>

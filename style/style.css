@@ -1,0 +1,280 @@
+html {
+    font-size: 18px;
+    font-family: Verdana, sans-serif;
+    margin:0px;
+    height: 100%;
+    
+  }
+
+  body{
+      margin: 0;
+      height: 100%;
+  }
+
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 4.44rem;
+    padding: 0 12%;
+    background-color: white;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.05);
+    
+  }
+
+  .header .logo {
+    flex-grow: 1;
+    color: #677180;
+    font-size: 1.2rem;
+    font-weight: 900;
+  }
+
+  .header li {
+    display: inline;
+    padding-right: 2.22rem;
+  }
+
+  .header li a {
+    text-decoration: none;
+    color: #4a4a4a;
+    font-size: .77rem;
+  }
+
+  .second {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 2rem;
+    padding: 0 30%;
+    background-color: rgb(0, 0, 0);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    
+  }
+
+  .second li {
+    display: inline-flex;
+    padding-right: 5.22rem;
+  }
+
+  .second li a {
+    text-decoration: none;
+    color: #ffffff;
+    opacity: .8;
+    font-size: .7rem;
+  }
+
+
+
+  .banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding: 0 12%;
+    height: 50rem;
+    background-image: url("../asset/john-maeda.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #ffffff;
+    margin:0px 0px;
+    height: 100%;
+  }
+
+  .banner #name{
+    font-size: 3rem;
+}
+
+  .banner #artistIntro{
+      width:60%;
+      font-size: 1.5rem;
+      line-height: 1.5;
+  }
+
+  #biography #quote{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 200px;
+    height: 150px;
+    background: #88d212;
+    background-size: cover;
+    color: #000000;
+    font-size: 2.4rem;
+
+  }
+
+  #biography #bio{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    padding: 200px;
+    height: 20rem;
+    background: #040404;
+    background-size: cover;
+  }
+
+  .subTitle_detail h3{
+    position: relative;
+    bottom: 130px;
+    color: #80ff67;
+    font-size: 3.5rem;
+
+  }
+
+  
+
+  #biography li{
+    position: relative;
+    bottom: 130px;
+    color: #ffffff;
+    list-style: none;
+    line-height: 1.5;
+
+  }
+
+  #gallery{
+    background-color: #525252;
+    padding:5% 10%;
+  }
+
+  .galleryContainer{
+    /*flex makes sure that the images are not align at the bottom, try without flex*/
+    display: flex;
+    margin-top: 5vh;
+}
+
+.column{
+  display: inline-block;
+  margin-left:0.5%;
+  right:0.5%;
+  width:33%;
+}
+
+.column img{
+  cursor: pointer;
+  margin-top:4px;
+  width:100%;
+  filter: grayscale(100%);
+  transition: all 0.3s ease-in-out;
+}
+
+.column img:hover{
+  filter: grayscale(0%);
+  transform: scale(1.01);
+  z-index: 10;
+  box-shadow: 0px 3px 23px #000000;
+}
+
+#gallery h3{
+  color: #80ff67;
+  font-size: 3.5rem;
+
+}
+
+  #publish{
+   height: 50rem;
+   background: #ffffff;
+   padding: 100px;
+  }
+
+  .publish_detail h3{
+    color: #80ff67;
+    font-size: 3.5rem;
+
+  }
+
+  .bookContainer{
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+
+  .book{
+      padding: 30px;
+  }
+
+  #otherArtists{
+      padding:100px;
+      flex-wrap: wrap;
+      display: flex;
+      justify-content: space-around;
+      background-color: #000000;
+  }
+
+
+  /* --------------------- Map--------------------- */
+  ::-webkit-scrollbar {
+    width: 0px;
+    /* remove scrollbar space */
+  /* background: transparent;
+    /* optional: just make scrollbar invisible */
+  }
+
+  .info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+
+  .info h4 {
+    margin: 0 0 5px;
+    color: #777;
+  }
+
+  .legend {
+    text-align: left;
+    line-height: 18px;
+    color: #555;
+  }
+
+  .legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+  }
+
+  .bodyMap {
+    display: flex;
+  }
+
+  #select-menu {
+    position: absolute;
+    left: 50px;
+    top: 10px;
+    z-index: 10;
+  }
+#headPlace {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 10;
+
+  padding: 10px;
+  width: 200px;
+    background-color: #DDDDDD;
+
+  }
+  #map{
+    display: flex;
+    flex-direction: column;
+    width:50%;
+    margin: 0px;
+      }
+
+#storyPlace{
+        display: flex;
+        flex-direction: column;
+        width:50%;
+        margin: 0px;
+        background-color: rgb(147, 222, 72);
+        padding:50px 50px;
+          }
